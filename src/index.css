@@ -1,13 +1,9 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  margin: 0 auto;
-  max-width: 1470px;
-  color-scheme: light dark;
+
   color: rgba(255, 255, 255, 0.87);
-  background-color: #e9e8e8;
+  background-color: white;
   /* background-color: rgb(56,56,56); */
 
   font-synthesis: none;

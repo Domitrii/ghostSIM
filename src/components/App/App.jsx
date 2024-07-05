@@ -1,14 +1,11 @@
-import './App.css'
-import Header from '../Header/Header.jsx'
-import StartBlock from '../StartBlock/StartBlock'
+import { lazy } from "react"
+const TrackerImgSect = lazy(() => import("../TrackerImgSect/TrackerImgSect"))
+
 
 function App() {
   return (
     <>
-    <div className="App-Header">
-      <Header />
-      <StartBlock />
-     </div>
+        <TrackerImgSect />
     </>
   )
 }
