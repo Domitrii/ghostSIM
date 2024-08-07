@@ -5,9 +5,9 @@ function TrackFirstBlock() {
     const dailyNorma = 2
   return (
     <div className={css.firstBlock}>
-        <NavLink to="/track" className={css.trackLogo}>
+        <h1 className={css.trackLogo}>
             AquaTrack
-        </NavLink>
+        </h1>
         <div className={css.yourDailyNorma}>
             <p>{dailyNorma} L</p>
             <span>My daily norma</span>
