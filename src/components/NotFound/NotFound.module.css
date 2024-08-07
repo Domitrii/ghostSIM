@@ -1,0 +1,49 @@
+.whoopsSect{
+    margin: 0 120px;
+    background-color: #9be1a0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.backBottle{
+    background-image: url('../images/bigImg/tracker-bg-desctop.png');
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    display: flex;
+    color: rgb(50, 63, 71);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.whoopsText{
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.notFText{
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.homePageBtn{
+    text-decoration: none;
+    color: rgb(50, 63, 71);
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 10px;
+    padding: 10px 40px;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.homePageBtn:hover{
+    background-color: rgb(215, 215, 215);
+}

@@ -1,0 +1,30 @@
+.dayCont{
+    color: black;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+
+}
+
+.dayContElem{
+    background-color: rgb(204, 204, 204);
+    width: fit-content;
+    display: flex;
+    padding: 10px;
+    font-size: 18px;
+    min-width: 27px;
+    height: 27px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+.today{
+    background-color: rgb(145, 145, 145);
+}
+
+.dayContElem:hover{
+    background-color: rgb(145, 145, 145);
+}

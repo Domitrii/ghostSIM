@@ -2,36 +2,32 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import { useState } from "react"
 import * as Yup from "yup"
-import css from './LogIn.module.css'
-import Wallpaper from "../WallpaperSection/Wallpaper";
+import css from './SignUp.module.css'
 import Container from "../Container/Container";
 import LeftContainer from "../Container/LeftContainer";
-import { NavLink, useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import Wallpaper from "../WallpaperSection/Wallpaper";
+import { NavLink } from "react-router-dom";
 
 
 const UserLogInSchema = Yup.object().shape({
     email: Yup.string().email().required("Email is required"),
-    password: Yup.string().min(8).max(50).required("Password is not success")
+    password: Yup.string().min(8).max(50).required("Password is not success"),
+    repeatPassword: Yup.string().oneOf([Yup.ref("password"), null], "Password must match").required("It's not like your password")
 })
 
 
-function LogIn({onLogin}) {
-    const [isVisible, setIsVisible] = useState(false);
-    const navigate = useNavigate();
+function SignIn({onSignUp}) {
+    const [isVisible, setIsVisible] = useState(false)
 
     const INITIAL_FORM_DATA = {
         email: "",
-        password: ""
+        password: "",
+        repeatPassword: ""
     }
 
-    const handleFormSubmit = async (data, {resetForm}) => {
-        const result = await onLogin(data)
-        if(result){
-            toast("not that password or email")
-        } else {
-            navigate("/tracker")
-        }
+    const handleFormSubmit = (data, {resetForm}) => {
+        console.log(data)
+        onSignUp(data)
         resetForm()
     }
 
@@ -44,7 +40,7 @@ function LogIn({onLogin}) {
             </NavLink>
             <Formik onSubmit={handleFormSubmit} validationSchema={UserLogInSchema} initialValues={INITIAL_FORM_DATA}>
                 <Form className={css.form}>
-                    <h2 className={css.signInH}>Log in</h2>
+                    <h2 className={css.signInH}>Sign Up</h2>
                     <label className={css.justLabe}>
                         <h3>
                             Email
@@ -66,9 +62,18 @@ function LogIn({onLogin}) {
                         </div>
                         <ErrorMessage name="password" component="span" className={css.errorMsg} />
                     </label>
-                    <NavLink to="/forgot-password" className={css.forgotPassLink}>
-                        Forgot Password?
-                    </NavLink>
+                    <label className={css.justLabe}>
+                        <h3>
+                            Repeat Password
+                        </h3>
+                        <div className={css.passSect}>
+                            <Field type={isVisible ? "text" : "password"} name="repeatPassword" className={css.field} placeholder="Repeat your password" />
+                            <span className={css.eyeSlash} onClick={() => setIsVisible(!isVisible)}>
+                                {isVisible ? <FaEye /> : <FaEyeSlash />}
+                            </span>
+                        </div>
+                        <ErrorMessage name="repeatPassword" component="span" className={css.errorMsg} />
+                    </label>
                     <button
                     className={css.sbmBtn}
                     type="submit"
@@ -81,4 +86,4 @@ function LogIn({onLogin}) {
   )
 }
 
-export default LogIn
+export default SignIn

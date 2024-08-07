@@ -1,0 +1,90 @@
+.firstBlock{
+    display: flex;
+    flex-direction: column;
+    background-color: #9be1a0;
+    background-image: url('../images/bigImg/tracker-bg-desctop.png');
+    background-repeat: no-repeat;
+    height: 654px;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    color: rgb(50, 63, 71);
+    border-radius: 40px;
+    padding: 32px 40px 50px 40px;
+}
+
+.trackLogo{
+    width: max-content;
+    cursor: pointer;
+    transition: 1s;
+    text-decoration: none;
+    color: rgb(50, 63, 71);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.trackLogo:hover{
+    color: #9be1a0;
+}
+
+.yourDailyNorma{
+    display: flex;
+    padding: 16px;
+    margin-left: 20px;
+    margin-top: 120px;
+    background-color: white;
+    max-width: max-content;
+    flex-direction: column;
+    border-radius: 15px;
+}
+
+.yourDailyNorma span{
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+.percentAvg{
+    background-color: white;
+    min-width: 260px;
+    max-width: max-content;
+    padding: 16px;
+    border-radius: 20px;
+    margin: 260px auto 0;
+}
+
+.percentLine{
+    width: 100%;
+    height: 15px;
+    background-color: rgb(174, 174, 174);
+    border-radius: 10px;
+}
+
+.percentsBlock{
+    display: flex;
+    justify-content: space-between;
+}
+
+.percentsBlock p{
+    color: #b3b3b3;
+}
+
+.addMore{
+    display: flex;
+    min-width: 100px;
+    max-width: fit-content;
+    color: #fff;
+    background-color: rgb(42, 42, 46);
+    padding: 16px;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+    margin-left: auto;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.addMore:hover {
+    background-color: rgb(75, 75, 82);
+}

@@ -1,0 +1,139 @@
+.secTrackPage{
+    width: 100%;
+    color: rgb(50, 63, 71);
+    border-radius: 40px;
+    padding: 32px 40px 50px 40px;
+    background-color: #f0eff4;
+}
+
+.secondBlockTop{
+    display: flex;
+    justify-content: space-between;
+    min-height: 100px;
+}
+
+.userAvatar{
+    color: rgb(75, 75, 82);
+    padding: 10px;
+    min-width: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 13px;
+    cursor: pointer;
+}
+
+.userBlock{
+    color: rgb(75, 75, 82);
+    border: 1px solid rgb(75, 75, 82);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 13px;
+    flex-direction: column;
+}
+
+.avatarBlock{
+    color: rgb(75, 75, 82);
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+}
+
+.circle{
+    width: 10px;
+    height: 10px;
+    background-color: rgb(75, 75, 82);
+    border-radius: 50%;
+}
+
+.circle::after{
+    background-color: #476e4a;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+}
+
+.addBar{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.addWaterBtn{
+    display: flex;
+    background-color: rgb(60, 61, 73);
+    max-width: fit-content;
+    color: white;
+    padding: 10px;
+    border-radius: 16px;
+    cursor: pointer;
+    gap: 10px;
+    transition: 1s;
+    border: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.addWaterBtn span{
+    border: none;
+    border-radius: 50%;
+    background-color: #63ab68;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+}
+
+.addWaterBtn:hover{
+    background-color: #476e4a;
+}
+
+.todayWater{
+    min-height: 240px;
+}
+
+
+
+.transition {
+    transition: opacity 0.4s ease-in-out;
+}
+
+.transition div p:hover {
+    border-radius: 10px;
+    padding: 1px;
+    border: 1px solid #d0d0d0;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: auto;
+    padding-bottom: 10px;
+}
+
+.visible div p {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.visible div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.nav{
+    color: rgb(75, 75, 82);
+    text-decoration: none;
+}

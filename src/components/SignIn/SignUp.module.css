@@ -8,7 +8,6 @@
 .signInH{
     font-size: 32px;
     font-weight: 700;
-    margin-bottom: 24px;
 }
 
 .justLabe h3{
@@ -17,6 +16,7 @@
     font-size: 22px;
     font-weight: 700;
     gap: 5px;
+    margin-bottom: 10px;
 }
 
 .field{
@@ -61,4 +61,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.aquaLogo{
+    width: max-content;
+    cursor: pointer;
+    transition: 1s;
+    text-decoration: none;
+    color: rgb(50, 63, 71);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.aquaLogo:hover{
+    color: #9be1a0;
 }

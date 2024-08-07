@@ -1,3 +1,7 @@
+.signUpAll{
+    display: flex;
+}
+
 .form{
     display: flex;
     flex-direction: column;
@@ -8,7 +12,7 @@
 .signInH{
     font-size: 32px;
     font-weight: 700;
-    margin-bottom: 24px;
+    margin: 0;
 }
 
 .justLabe h3{
@@ -17,6 +21,7 @@
     font-size: 22px;
     font-weight: 700;
     gap: 5px;
+    margin-bottom: 10px;
 }
 
 .field{
@@ -39,7 +44,7 @@
     border-radius: 20px;
     border: none;
     background-color: #9be1a0;
-    margin-top: 40px;
+    margin-top: 20px;
     cursor: pointer;
 }
 
@@ -62,4 +67,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.aquaLogo{
+    width: max-content;
+    cursor: pointer;
+    transition: 1s;
+    text-decoration: none;
+    color: rgb(50, 63, 71);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.aquaLogo:hover{
+    color: #9be1a0;
+}
+
+.forgotPassLink{
+    color: rgb(50, 63, 71);
+    text-decoration: none;
+    font-weight: 600;
+    width: max-content;
+    cursor: pointer;
+    margin: 0 auto;
 }
