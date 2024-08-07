@@ -25,8 +25,10 @@ function LogIn({onLogin}) {
         password: ""
     }
 
-    const handleFormSubmit = async (data, {resetForm}) => {
-        const result = await onLogin(data)
+    // handle form async await
+
+    const handleFormSubmit = (data, {resetForm}) => {
+        const result = onLogin(data)
         if(result){
             toast("not that password or email")
         } else {
