@@ -12,15 +12,17 @@ function TrackerPage() {
   const onSelect = day => {
     setSelectDay(day)
   }
+
   const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(apiDailyRecord())
+  }, [dispatch])
+  
 
   const handleLogout = () => {
     dispatch(apiLogOutUser())
   }
-
-  useEffect(() => {
-    dispatch(apiDailyRecord())
-  }, [dispatch])
 
   return (
     <div className="TrackBlock">
