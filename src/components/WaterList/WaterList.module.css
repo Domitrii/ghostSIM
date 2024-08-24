@@ -1,0 +1,12 @@
+.listBlock{
+    list-style: none;
+    display: flex;
+    padding: 30px 0;
+    gap: 20px;
+}
+
+.itemBlock{
+    display: flex;
+    padding: 10px;
+    height: 100%;
+}

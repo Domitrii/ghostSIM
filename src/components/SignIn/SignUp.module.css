@@ -76,3 +76,28 @@
 .aquaLogo:hover{
     color: #9be1a0;
 }
+
+.toastStyle{
+    background-color: rgb(255, 82, 82);
+    min-width: 200px;
+    padding: 12px 14px 12px 14px;
+    border-radius: 20px;
+    gap: 10px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeToast{
+    cursor: pointer;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeBtn{
+    width: 32px;
+    height: 32px;
+}

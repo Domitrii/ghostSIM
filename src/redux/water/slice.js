@@ -21,6 +21,7 @@ const handlePending = (state) => {
 
 const handleError = (state, action) => {
     state.isLoading = false
+    console.log(action.payload)
     state.error = action.payload?.message || action.error?.message || 'An error occurred'
 }
 
@@ -33,6 +34,7 @@ const authWaterSlice = createSlice({
         .addCase(apiDailyRecord.fulfilled, (state, action) => {
             state.isLoading = false
             state.error = null
+            console.log(action.payload)
             state.items.perDay = action.payload;
         })
         .addCase(apiDailyRecord.rejected, handleError)
@@ -47,12 +49,11 @@ const authWaterSlice = createSlice({
 
         .addCase(apiAddWaterRecord.pending, handlePending)
         .addCase(apiAddWaterRecord.fulfilled, (state, action) => {
-            const payload = { ...action.payload, _id: undefined };
             state.isLoading = false;
             state.error = null;
-            state.items.perDay.data.push(payload);
-            state.items.perMonth.push(payload);
-            state.items.perDay.waterAmount += Number(payload.amount);
+            state.items.perDay.data.push(action.payload);
+            state.items.perMonth.push(action.payload);
+            state.items.perDay.waterAmount += Number(action.payload.amount);
           })
         .addCase(apiAddWaterRecord.rejected, handleError)
 

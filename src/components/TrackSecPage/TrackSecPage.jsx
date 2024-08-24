@@ -1,88 +1,126 @@
-import { useState } from 'react'
-import css from './TrackSecPage.module.css'
-import { CiSettings } from "react-icons/ci";
-import { CiLogout } from "react-icons/ci";
+import { useEffect, useState } from 'react';
+import css from './TrackSecPage.module.css';
+import { CiSettings, CiLogout } from "react-icons/ci";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserData } from '../../redux/auth/selectors';
 import MonthCount from './MonthCount/MonthCount';
 import ModalForm from '../ModalForm/ModalForm';
 import WaterList from '../WaterList/WaterList';
-import { apiAddWaterRecord, apiDailyRecord } from '../../redux/water/operation';
-import { currentDay, currentTime } from './MonthCount/Counts';
-import { NavLink } from 'react-router-dom';
+import { currentDay } from './MonthCount/Counts';
+import { selectCurrentUser } from '../../redux/auth/selectors';
+import SettingsModal from '../SettingsModal/SettingsModal';
+import { apiAddWaterRecord } from '../../redux/water/operation';
 
-function TrackSecPage({selectDay, onSelect, logOut}) {
-    let userName = useSelector(selectUserData)
-    if(typeof userName !== 'string' ){
-        userName = "User"
-    }
-    const dispatch = useDispatch()
+function TrackSecPage({ selectDay, onSelect, handleLogout, userName }) {
+    const [isActive, setIsActive] = useState(false);
+    const [isModal, setIsModal] = useState(false);
+    const [isSetting, setIsSetting] = useState(false);
+    const [setModal, setSetModal] = useState(null);
+    const selector = useSelector(selectCurrentUser);
+    const [editModal, setEditModal] = useState(false);
+    const [amountNow, setAmountNow] = useState(0);
 
-    const handleAddNewWater = (newWater) => {
-        dispatch(apiAddWaterRecord(newWater))
-    }
+    const dispatch = useDispatch();
 
-    const [isActive, setIsActive] = useState(false)
-    const [isModal, setIsModal] = useState(false)
     const handleClick = () => {
-        setIsActive(!isActive)
-    }
+        setIsActive(!isActive);
+    };
+
+    const settingsData = async () => {
+        try {
+            const data = await selector;
+            setIsSetting(true);
+            setSetModal(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const addWater = () => {
-        setIsModal(true)
-        onSelect(currentDay())
-        dispatch(apiDailyRecord(currentDay()))
-    }
+        setIsModal(true);
+        onSelect(currentDay());
+    };
+
+    const closeSettings = () => {
+        setIsSetting(false);
+    };
 
     const closeModal = () => {
-        setIsModal(false)
-    }
+        setIsModal(false);
+    };
 
-    const onSubmitData = (data) => {
-        handleAddNewWater({
-            ...data,
-            time: `${selectDay}-${data.time}`
-        })
-    }
+    const handleOpenEditModal = (amount) => {
+        setAmountNow(amount);
+        setEditModal(true);
+    };
 
-  return (
-    <div className={css.secTrackPage}>
-        <div className={css.secondBlockTop}>
-            <h3>Hello, {userName}</h3>
-            <div className={css.avatarBlock}>
-                <div className={css.userBlock}>
-                    <div className={css.userAvatar} onClick={handleClick}>
-                        {userName}
-                        <div className={css.circle}></div>
-                    </div>
-                    <div className={`${css.transition} ${isActive ? css.visible : css.hidden}`}>
-                        { isActive ? (<div>
-                            <p><CiSettings />Settings</p>
-                            <p onClick={logOut}><NavLink to="/" className={css.nav}><CiLogout />Log out</NavLink></p>
-                        </div>) : (null)}
+    const handleCloseEdit = () => {
+        setEditModal(false);
+    };
+
+    const onSubmitData = async (data) => {
+        console.log(data);
+        data.time = `${selectDay}-${data.time}`;
+        console.log(data);
+        dispatch(apiAddWaterRecord(data));
+    };
+
+    return (
+        <div className={css.secTrackPage}>
+            <div className={css.secondBlockTop}>
+                <h3>Hello, {userName}</h3>
+                <div className={css.avatarBlock}>
+                    <div className={css.userBlock}>
+                        <div className={css.userAvatar} onClick={handleClick}>
+                            {userName}
+                            <div className={css.circle}></div>
+                        </div>
+                        <div className={`${css.transition} ${isActive ? css.visible : css.hidden}`}>
+                            {isActive ? (
+                                <div>
+                                    <p onClick={settingsData}><CiSettings />Settings</p>
+                                    <p onClick={handleLogout} className={css.nav}><CiLogout />Log out</p>
+                                </div>
+                            ) : (null)}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div className={css.todayWater}>
-            <div className={css.addBar}>
-                <h3>Today</h3>
-                <button className={css.addWaterBtn} onClick={addWater}><span>+</span> Add Water</button>
+            <div className={css.todayWater}>
+                <div className={css.addBar}>
+                    <h3>Today</h3>
+                    <button className={css.addWaterBtn} onClick={addWater}><span>+</span> Add Water</button>
+                </div>
+                <div className={css.addWaterSec}>
+                    <WaterList selectDay={selectDay} setOpenEdit={handleOpenEditModal}  />
+                </div>
             </div>
-            <div className={css.addWaterSec}>
-                <WaterList selectDay={selectDay} />
+            <div className={css.monthCountBlock}>
+                <MonthCount selectDay={selectDay} /> 
             </div>
+            {isModal && 
+            <ModalForm 
+                text={'Add water'} 
+                choose={"Choose water value:"} 
+                close={closeModal} 
+                onSubmitData={onSubmitData} 
+            />}
+
+            {isSetting && 
+            <SettingsModal 
+                close={closeSettings}
+                data={setModal} 
+            />}
+
+            {editModal && 
+            <ModalForm 
+                text={'Edit water amount'} 
+                choose={'Edit water value:'} 
+                close={handleCloseEdit}
+                onSubmitData={onSubmitData}
+                amountNow={amountNow} 
+            />}
         </div>
-        <div className={css.monthCountBlock}>
-            <MonthCount selectDay={selectDay} /> 
-        </div>
-        {isModal ? 
-        <ModalForm text={'Add water'} 
-        choose={"Choose water value:"} 
-        close={closeModal} 
-        onSubmitData={onSubmitData} /> : (null)}
-    </div>
-  )
+    );
 }
 
-export default TrackSecPage
+export default TrackSecPage;

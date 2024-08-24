@@ -7,7 +7,10 @@ import Wallpaper from "../WallpaperSection/Wallpaper";
 import Container from "../Container/Container";
 import LeftContainer from "../Container/LeftContainer";
 import { NavLink, useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
+import { apiLogInUser } from "../../redux/auth/operation";
+import { useDispatch } from "react-redux";
+import { IoIosClose } from "react-icons/io";
 
 
 const UserLogInSchema = Yup.object().shape({
@@ -16,26 +19,36 @@ const UserLogInSchema = Yup.object().shape({
 })
 
 
-function LogIn({onLogin}) {
+function LogIn() {
     const [isVisible, setIsVisible] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const INITIAL_FORM_DATA = {
         email: "",
         password: ""
     }
 
-    // handle form async await
+    const closeToast = () => {
+        toast.remove()
+      }
 
-    const handleFormSubmit = (data, {resetForm}) => {
-        const result = onLogin(data)
-        if(result){
-            toast("not that password or email")
-        } else {
-            navigate("/tracker")
+    const handleFormSubmit = async (data, { resetForm }) => {
+        try {
+          const resultAction = await dispatch(apiLogInUser(data));
+          if (resultAction.payload.user) {
+              navigate("/tracker");
+            } else {
+                toast.custom(<div className={css.toastStyle}>
+                    Write your data correctly
+                    <p className={css.closeToast} onClick={closeToast}><IoIosClose className={css.closeBtn} /></p>
+                    </div>, {duration: 1300})
+          }
+        } catch (error) {
+            console.error(error)
         }
-        resetForm()
-    }
+        resetForm();
+      };
 
 
   return (
@@ -78,6 +91,7 @@ function LogIn({onLogin}) {
                 </Form>
             </Formik>
         </LeftContainer>
+            <Toaster />
         <Wallpaper />
     </Container>
   )

@@ -1,14 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { requestLogIn, requestLogOut, requestSignUp, setToken } from "../../serves/authApi";
-
-
+import { getCurrentUser, requestLogIn, requestLogOut, requestSignUp, setToken, updateUser } from "../../serves/authApi";
 
 
 export const apiRegisterUser = createAsyncThunk(
     'auth/register',
     async (formData, thunkApi) => {
         try{
+            console.log('register')
             const data = await requestSignUp(formData)
+            console.log('register end')
             return data
         } catch (error) {
             return thunkApi.rejectWithValue(error)
@@ -19,20 +19,19 @@ export const apiRegisterUser = createAsyncThunk(
 export const apiLogInUser = createAsyncThunk(
     'auth/login',
     async (formData, thunkApi) => {
-        try{
-            const data = await requestLogIn(formData)
-            return data;
-        }catch (error) {
-            return thunkApi.rejectWithValue(error)
-        }
-    } 
-)
+      try {
+        const data = await requestLogIn(formData);
+        return data;
+      } catch (error) {
+        return thunkApi.rejectWithValue(error.message);
+      }
+    }
+  );
 
 export const apiLogOutUser = createAsyncThunk(
     'auth/logout',
     async (_, thunkApi) => {
         try{
-            console.log('logOut')
             await requestLogOut()
             setToken(null)
             return
@@ -42,5 +41,26 @@ export const apiLogOutUser = createAsyncThunk(
     } 
 )
 
+export const apiCurrentUser = createAsyncThunk(
+    'auth/current',
+    async (_, thunkApi) => {
+        try {
+            const response = await getCurrentUser()
+            return response
+        } catch (error) {
+            return thunkApi.rejectWithValue(error)
+        }
+    }
+)
 
-
+export const apiUpdateUser = createAsyncThunk(
+    'auth/update',
+    async (formData, thunkApi) => {
+        try {
+            const response = await updateUser(formData)
+            return response
+        } catch (error) {
+            return thunkApi.rejectWithValue(error)
+        }
+    }
+)

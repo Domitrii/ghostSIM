@@ -1,4 +1,5 @@
 import axios from "axios";
+import { store } from "../redux/store";
 
 const BASE_URL = "https://node-beginer-tests.onrender.com"
 
@@ -15,21 +16,51 @@ export const removeToken = () => {
 }
 
 export const requestSignUp = async (formData) => {
-    console.log('data')
-    const {data} = await instance.post('/api/users/register', formData)
-    console.log('data, end')
-    return data;
+    try {
+        const {data} = await instance.post("/api/users/register", formData)
+        return data;
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 export const requestLogIn = async (formData) => {
-    console.log(formData)
-    const {data} = await instance.post('/api/users/login', formData)
-    setToken(data.token)
-    return data;
+    try{
+        const { data } = await instance.post("/api/users/login", formData);
+        setToken(data.token);
+        return data;
+    } catch(error) {
+        return new Error(error.response?.data?.message || error.message || 'An error occurred')
+    }
 }
 
 export const requestLogOut = async () => {
-    const {data} = await instance.post('/api/user/logout')
-    console.log(data)
-    return data
+    try {
+        setToken(store.getState().auth.token)
+        const {data} = await instance.post('/api/users/logout')
+        return data
+    } catch (error){
+        console.error('u have an error: ', error)
+    }
+}
+
+
+export const getCurrentUser = async () => {
+    try {
+        setToken(store.getState().auth.token)
+        const {data} = await instance.get('/api/users/current')
+        return data
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const updateUser = async (formData) => {
+    try {
+        setToken(store.getState().auth.token)
+        const {data} = await instance.post('/api/users/update', formData)
+        return data
+    } catch (error) {
+        console.error(error)
+    }
 }

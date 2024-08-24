@@ -6,7 +6,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import { IoIosClose } from "react-icons/io";
 import { apiAddWaterRecord } from '../../redux/water/operation';
 
-function ModalForm({ text, choose, close, onSubmitData }) {
+function ModalForm({ text, choose, close, onSubmitData,  }) {
   const initialState = {
     amount: 0,
     time: currentTime(),
@@ -33,6 +33,11 @@ function ModalForm({ text, choose, close, onSubmitData }) {
     toast.remove()
   }
 
+  // const editOrAdd = () => {
+  //   console.log(amountNow)
+  //   amountNow ? amountNow : values.amount
+  // }
+
   const handleSubmit = (values) => {
     if(values.amount === 0 || values.amount === '' ){
         values.amount = isCount
@@ -52,13 +57,7 @@ function ModalForm({ text, choose, close, onSubmitData }) {
     <>
       <div className={css.modalBack} onClick={close}></div>
       <div className={css.modalBlock}>
-        <Formik
-          initialValues={{
-            amount: isCount,
-            time: recordingTime,
-          }}
-          onSubmit={handleSubmit}
-        >
+        <Formik initialValues={{amount: isCount, time: recordingTime,}} onSubmit={handleSubmit}>
           {({ values, handleChange, handleSubmit }) => (
             <Form onSubmit={handleSubmit} className={css.modalBlockCont}>
                 <div className={css.closeModal} onClick={close}><IoIosClose className={css.closeBtn} /></div>

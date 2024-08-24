@@ -137,3 +137,8 @@
     color: rgb(75, 75, 82);
     text-decoration: none;
 }
+
+.monthCountBlock{
+    display: flex;
+    align-items: end;
+}

@@ -7,6 +7,10 @@ import Container from "../Container/Container";
 import LeftContainer from "../Container/LeftContainer";
 import Wallpaper from "../WallpaperSection/Wallpaper";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { apiRegisterUser } from "../../redux/auth/operation";
+import { Toaster, toast } from "react-hot-toast";
+import { IoIosClose } from "react-icons/io";
 
 
 const UserLogInSchema = Yup.object().shape({
@@ -16,8 +20,23 @@ const UserLogInSchema = Yup.object().shape({
 })
 
 
-function SignIn({onSignUp}) {
+function SignIn() {
     const [isVisible, setIsVisible] = useState(false)
+    const dispatch = useDispatch()
+
+    const closeToast = () => {
+        toast.remove()
+      }
+
+    const onSignUp = async (formData) => {
+            const a = await dispatch(apiRegisterUser(formData))
+            if(a.error){
+                toast.custom(<div className={css.toastStyle}>
+                    User already exist
+                    <p className={css.closeToast} onClick={closeToast}><IoIosClose className={css.closeBtn} /></p>
+                    </div>, {duration: 1300});
+            }
+    }
 
     const INITIAL_FORM_DATA = {
         email: "",
@@ -26,7 +45,6 @@ function SignIn({onSignUp}) {
     }
 
     const handleFormSubmit = (data, {resetForm}) => {
-        console.log(data)
         onSignUp(data)
         resetForm()
     }
@@ -82,6 +100,7 @@ function SignIn({onSignUp}) {
             </Formik>
         </LeftContainer>
         <Wallpaper />
+        <Toaster />
     </Container>
   )
 }

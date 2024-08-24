@@ -2,10 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { dailyRecord, monthlyRecord, addWaterRecord, updateWaterRecord, deleteWaterRecord } from "../../serves/waterApi";
 
 export const apiDailyRecord = createAsyncThunk(
-    'track/day',
+    'track/daily',
     async (query, thunkApi) => {
         try {
-            const data = await dailyRecord(query);
+            const {data} = await dailyRecord(query);
+            console.log(data)
             return data;
         } catch (error) {
             return thunkApi.rejectWithValue(error);
@@ -17,6 +18,7 @@ export const apiMonthlyRecord = createAsyncThunk(
     'track/month',
     async (query, thunkApi) => {
         try {
+            console.log(query)
             const data = await monthlyRecord(query);
             return data;
         } catch (error) {
