@@ -21,7 +21,6 @@ const handlePending = (state) => {
 
 const handleError = (state, action) => {
     state.isLoading = false
-    console.log(action.payload)
     state.error = action.payload?.message || action.error?.message || 'An error occurred'
 }
 
@@ -34,10 +33,13 @@ const authWaterSlice = createSlice({
         .addCase(apiDailyRecord.fulfilled, (state, action) => {
             state.isLoading = false
             state.error = null
-            console.log(action.payload)
             state.items.perDay = action.payload;
         })
-        .addCase(apiDailyRecord.rejected, handleError)
+        .addCase(apiDailyRecord.rejected, (state, action) => {
+            state.isLoading = false
+            console.log(action.payload)
+            state.error = 'idk'
+        })
 
         .addCase(apiMonthlyRecord.pending, handlePending)
         .addCase(apiMonthlyRecord.fulfilled, (state, action) => {
@@ -61,11 +63,12 @@ const authWaterSlice = createSlice({
         .addCase(apiDeleteWaterRecord.fulfilled, (state, action) => {
             state.isLoading = false
             state.error = null
-            const index = state.items.perDay.data.findIndex(record => record._id === action.payload._id)
+            console.log(action)
+            const index = state.items.perDay.data.findIndex(record => record._id === action.meta.arg._id)
             state.items.perDay.data.splice(index, 1)
-            state.items.perDay.waterAmount -= action.payload.amount
-            const monthIndex = state.items.perMonth.data.findIndex(record => record._id === action.payload._id)
-            state.items.perMonth.data.splice(monthIndex, 1)
+            state.items.perDay.waterAmount -= action.meta.arg.amount
+            const monthIndex = state.items.perMonth.findIndex(record => record._id === action.meta.arg._id)
+            state.items.perMonth.splice(monthIndex, 1)
         })
         .addCase(apiDeleteWaterRecord.rejected, handleError)
 

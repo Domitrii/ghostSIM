@@ -3,18 +3,18 @@ import { Field, Form, Formik } from 'formik'
 import css from './SettingsModal.module.css'
 import * as yup from 'yup'
 import TimePicker from '../../helper/TimePeaker'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { apiUpdateUser } from '../../redux/auth/operation'
 import { useEffect, useState } from 'react'
 import { getWaterNorm } from "../../helper/NormaPerDay";
+import { selectCurrentUser } from "../../redux/auth/selectors";
 
-function SettingsModal({data, close}) {
+function SettingsModal({data, close, daily, dailyNormData}) {
     const dispatch = useDispatch()
 
     const [newValue, setNewValue] = useState()
     const [changeName, setChangeName] = useState(true)
     const [changeEmail, setChangeEmail] = useState(true)
-    const [dailyCalc, setDailyCalc] = useState(data.dailyNorm)
 
     const schema = yup.object().shape({
         name: yup.string().min(3, "Please write more than 3").max(50, "Please write less than 50"),
@@ -43,12 +43,13 @@ function SettingsModal({data, close}) {
     }
 
     useEffect(() => {
-        setDailyCalc(getWaterNorm( data.gender ,data.weight, data.timeActive))
+        daily(getWaterNorm( data.gender ,data.weight, data.timeActive))
     }, [data])
 
 
     const handleSubmit = async (values) => {
         values.timeActive = newValue
+        values.dailyNorm = Number(dailyNormData) * 1000
         try {
             const result = await dispatch(apiUpdateUser(values))
             if(!result) {
@@ -84,7 +85,7 @@ function SettingsModal({data, close}) {
                                 <ul className={css.blockToChange}>
                                     <li>
                                         <h2>Daily norm</h2>
-                                        <div>{(dailyCalc ? dailyCalc : 2 )}</div>
+                                        <div>{(dailyNormData ? dailyNormData : 2 )}</div>
                                     </li>
                                     <li>
                                         <label htmlFor='gender'>gender</label>

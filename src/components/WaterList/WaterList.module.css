@@ -2,7 +2,9 @@
     list-style: none;
     display: flex;
     padding: 30px 0;
-    gap: 20px;
+    gap: 16px;
+    overflow: scroll;
+    max-width: 607px;
 }
 
 .itemBlock{

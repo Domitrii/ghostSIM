@@ -63,6 +63,11 @@
     font-size: 18px;
 }
 
+.addBar h3{
+    display: flex;
+    align-items: center;
+}
+
 .addWaterBtn{
     display: flex;
     background-color: rgb(60, 61, 73);
@@ -129,7 +134,6 @@
 .visible div{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 5px;
 }
 

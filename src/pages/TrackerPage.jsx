@@ -11,18 +11,25 @@ import { selectWaterPerDay } from "../redux/water/selectors";
 
 function TrackerPage() {
   const [selectDay, setSelectDay] = useState(currentDay());
+  const [userData, setUserData] = useState(null)
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  // const response = useSelector(selectWaterPerDay);
+  const [isModal, setIsModal] = useState(false);
   const [userName, setUserName] = useState('User')
+  const [setModal, setSetModal] = useState(null);
+  const [dailyNormData, setDailyNormData] = useState(2000)
+  const selectWater = useSelector(selectWaterPerDay)
+  const [percentageDenier, setPercentageDenier] = useState(0)
 
-  const onSelect = (day) => {
+  const addWater = () => {
+    setIsModal(true);
+    onSelect(currentDay());
+};
+
+  const onSelect = async (day) => {
     setSelectDay(day);
+    await dispatch(apiDailyRecord(day));
   };
-
-  // const waterToday = async () => {
-  //   console.log(data)
-  // }
 
   const handleLogout = async () => {
     try {
@@ -38,28 +45,43 @@ function TrackerPage() {
     }
   };
 
+
   const userOnLogin = async () => {
     const user = await dispatch(apiCurrentUser())
-    if(!user){
-      console.error(`it's not a user`)
-      return 
-    } 
-    setUserName(user.payload.name) 
+    const select = await selectWater
+    try {
+      if(user.payload){
+        setUserData(user.payload)
+        setUserName(user.payload.name)
+        setDailyNormData(user.payload.dailyNorm || 2000)
+        console.log(select.waterAmount)
+        }
+      } catch (err) {
+      console.error(err)
+    }
   }
 
   useEffect(() => {
     dispatch(apiDailyRecord(selectDay));
-    // dispatch(apiUpdateUser())
-    dispatch(apiCurrentUser())
     userOnLogin()
-  }, [dispatch]);
+  }, [dispatch, selectDay]);
 
   return (
     <div className="TrackBlock">
       <DocumentTitle>Tracker</DocumentTitle>
-      <TrackFirstBlock />
-      <TrackSecPage selectDay={selectDay} onSelect={onSelect} handleLogout={handleLogout} userName={userName} 
-      // waterResp={response} 
+      <TrackFirstBlock userData={userData} addWater={addWater} dailyNormData={dailyNormData} />
+      <TrackSecPage 
+        selectDay={selectDay}
+        onSelect={onSelect} 
+        handleLogout={handleLogout} 
+        userName={userName} 
+        setIsModal={setIsModal} 
+        isModal={isModal} 
+        addWater={addWater}
+        setSetModal={setSetModal}
+        setModal={setModal}
+        setDailyNormData={setDailyNormData}
+        dailyNormData={dailyNormData}
       />
     </div>
   );

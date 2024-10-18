@@ -54,10 +54,13 @@ export const apiUpdateWaterRecord = createAsyncThunk(
 
 export const apiDeleteWaterRecord = createAsyncThunk(
     'track/delete',
-    async (id, thunkApi) => {
+    async (data, thunkApi) => {
         try {
-            const data = await deleteWaterRecord(id);
-            return data;
+            console.log(data)
+            const {_id} = data
+            console.log(_id)
+            const resp = await deleteWaterRecord(_id);
+            return resp;
         } catch (error) {
             return thunkApi.rejectWithValue(error);
         }

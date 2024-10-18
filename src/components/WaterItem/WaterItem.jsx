@@ -1,12 +1,10 @@
 import { FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import css from './WaterItem.module.css'
-import ModalForm from "../ModalForm/ModalForm";
 
-function WaterItem({resp, setEditModal}) {
-  console.log(resp)
+function WaterItem({resp, setEditModal, handleDelete}) {
   const handleEdit = () => {
-    setEditModal(resp.amount)
+    setEditModal(resp)
   }
   return (
     <div className={css.itemBlock}>
@@ -16,7 +14,7 @@ function WaterItem({resp, setEditModal}) {
       </div>
       <div className={css.buttons}>
         <FiEdit className={css.buttonsBtn} onClick={handleEdit} />
-        <FaTrash className={css.buttonsBtn} />
+        <FaTrash className={css.buttonsBtn} onClick={() => handleDelete(resp)} />
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import css from './TrackSecPage.module.css';
 import { CiSettings, CiLogout } from "react-icons/ci";
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,11 +10,9 @@ import { selectCurrentUser } from '../../redux/auth/selectors';
 import SettingsModal from '../SettingsModal/SettingsModal';
 import { apiAddWaterRecord } from '../../redux/water/operation';
 
-function TrackSecPage({ selectDay, onSelect, handleLogout, userName }) {
+function TrackSecPage({ selectDay, onSelect, handleLogout, userName, setIsModal, isModal, addWater, setSetModal, setModal, setDailyNormData, dailyNormData }) {
     const [isActive, setIsActive] = useState(false);
-    const [isModal, setIsModal] = useState(false);
     const [isSetting, setIsSetting] = useState(false);
-    const [setModal, setSetModal] = useState(null);
     const selector = useSelector(selectCurrentUser);
     const [editModal, setEditModal] = useState(false);
     const [amountNow, setAmountNow] = useState(0);
@@ -28,16 +26,12 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName }) {
     const settingsData = async () => {
         try {
             const data = await selector;
+            console.log(data)
             setIsSetting(true);
             setSetModal(data);
         } catch (error) {
             console.error(error);
         }
-    };
-
-    const addWater = () => {
-        setIsModal(true);
-        onSelect(currentDay());
     };
 
     const closeSettings = () => {
@@ -57,10 +51,13 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName }) {
         setEditModal(false);
     };
 
+    // const onEditData = async (data) => {
+    //     console.log(data)
+
+    // }
+
     const onSubmitData = async (data) => {
-        console.log(data);
         data.time = `${selectDay}-${data.time}`;
-        console.log(data);
         dispatch(apiAddWaterRecord(data));
     };
 
@@ -76,7 +73,7 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName }) {
                         </div>
                         <div className={`${css.transition} ${isActive ? css.visible : css.hidden}`}>
                             {isActive ? (
-                                <div>
+                                <div className={css.setLogOutBlock}>
                                     <p onClick={settingsData}><CiSettings />Settings</p>
                                     <p onClick={handleLogout} className={css.nav}><CiLogout />Log out</p>
                                 </div>
@@ -95,7 +92,7 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName }) {
                 </div>
             </div>
             <div className={css.monthCountBlock}>
-                <MonthCount selectDay={selectDay} /> 
+                <MonthCount selectDay={selectDay} onSelect={onSelect} /> 
             </div>
             {isModal && 
             <ModalForm 
@@ -109,6 +106,8 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName }) {
             <SettingsModal 
                 close={closeSettings}
                 data={setModal} 
+                daily={setDailyNormData}
+                dailyNormData={dailyNormData}
             />}
 
             {editModal && 
