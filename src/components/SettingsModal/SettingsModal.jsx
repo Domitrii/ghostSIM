@@ -43,13 +43,13 @@ function SettingsModal({data, close, daily, dailyNormData}) {
     }
 
     useEffect(() => {
-        daily(getWaterNorm( data.gender ,data.weight, data.timeActive))
+        daily(Number(getWaterNorm( data.gender ,data.weight, data.timeActive)) * 1000)
     }, [data])
 
 
     const handleSubmit = async (values) => {
         values.timeActive = newValue
-        values.dailyNorm = Number(dailyNormData) * 1000
+        values.dailyNorm = dailyNormData
         try {
             const result = await dispatch(apiUpdateUser(values))
             if(!result) {
@@ -85,7 +85,7 @@ function SettingsModal({data, close, daily, dailyNormData}) {
                                 <ul className={css.blockToChange}>
                                     <li>
                                         <h2>Daily norm</h2>
-                                        <div>{(dailyNormData ? dailyNormData : 2 )}</div>
+                                        <div>{(dailyNormData ? dailyNormData / 1000: 2 )}</div>
                                     </li>
                                     <li>
                                         <label htmlFor='gender'>gender</label>

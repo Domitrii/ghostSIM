@@ -19,7 +19,7 @@ function TrackerPage() {
   const [setModal, setSetModal] = useState(null);
   const [dailyNormData, setDailyNormData] = useState(2000)
   const selectWater = useSelector(selectWaterPerDay)
-  const [percentageDenier, setPercentageDenier] = useState(0)
+  const [waterAmount, setWaterAmount] = useState(0)
 
   const addWater = () => {
     setIsModal(true);
@@ -47,29 +47,43 @@ function TrackerPage() {
 
 
   const userOnLogin = async () => {
-    const user = await dispatch(apiCurrentUser())
-    const select = await selectWater
+    const user = await dispatch(apiCurrentUser());
+    const select = await selectWater;
     try {
-      if(user.payload){
-        setUserData(user.payload)
-        setUserName(user.payload.name)
-        setDailyNormData(user.payload.dailyNorm || 2000)
-        console.log(select.waterAmount)
+      if (user.payload) {
+        setUserData(user.payload);
+        console.log(user.payload)
+        setUserName(user.payload.name);
+        setDailyNormData(user.payload.dailyNorm || 2000);
+        
+        if (select && select.waterAmount) {
+          setWaterAmount(select.waterAmount);
         }
-      } catch (err) {
-      console.error(err)
+      }
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
-    dispatch(apiDailyRecord(selectDay));
-    userOnLogin()
+    if (selectWater && selectWater.waterAmount) {
+      setWaterAmount(selectWater.waterAmount);  
+    }
+  }, [selectWater]);
+
+  useEffect(() => {
+    async function loadData() {
+      await userOnLogin(); 
+      dispatch(apiDailyRecord(selectDay)); 
+    }
+    loadData(); 
   }, [dispatch, selectDay]);
+  
 
   return (
     <div className="TrackBlock">
       <DocumentTitle>Tracker</DocumentTitle>
-      <TrackFirstBlock userData={userData} addWater={addWater} dailyNormData={dailyNormData} />
+      <TrackFirstBlock userData={userData} addWater={addWater} dailyNormData={dailyNormData} waterAmount={waterAmount} />
       <TrackSecPage 
         selectDay={selectDay}
         onSelect={onSelect} 

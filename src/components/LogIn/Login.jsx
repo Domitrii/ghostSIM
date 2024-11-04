@@ -81,7 +81,7 @@ function LogIn() {
                         </div>
                         <ErrorMessage name="password" component="span" className={css.errorMsg} />
                     </label>
-                    <NavLink to="/forgot-password" className={css.forgotPassLink}>
+                    <NavLink to="/password-recover" className={css.forgotPassLink}>
                         Forgot Password?
                     </NavLink>
                     <button

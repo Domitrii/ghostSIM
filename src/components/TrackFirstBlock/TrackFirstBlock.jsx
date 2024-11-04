@@ -3,17 +3,19 @@ import css from './TrackFirstBlock.module.css';
 import { useSelector } from 'react-redux';
 import { selectWaterPerDay } from '../../redux/water/selectors';
 
-function TrackFirstBlock({ userData, addWater, dailyNormData }) {
-  const [percentage, setPercentage] = useState(0);
-//   const [tryer, setTryer] = useState(2)
-  const consumedWater = useSelector(selectWaterPerDay);
+function TrackFirstBlock({ userData, addWater, dailyNormData, waterAmount }) {
+  const [percentage, setPercentage] = useState(0)
 
   useEffect(() => {
-    if (dailyNormData > 0 && consumedWater) {
-      const percent = (consumedWater / dailyNormData) * 100;
+    if (dailyNormData && waterAmount) {
+      console.log(dailyNormData)
+      console.log(waterAmount)
+      const percent = (waterAmount / dailyNormData) * 100;
       setPercentage(percent);
     }
-  }, [dailyNormData, consumedWater]);
+  }, [dailyNormData, waterAmount]);
+  
+  
 
   return (
     <div className={css.firstBlock}>
@@ -27,11 +29,11 @@ function TrackFirstBlock({ userData, addWater, dailyNormData }) {
         <div
           className={css.percentLine}
           style={{
-            background: `linear-gradient(to right, rgb(152, 103, 103) ${percentage}%, rgb(174, 174, 174) ${percentage}%)`,
+            background: `linear-gradient(to right, #9be1a0 ${percentage}%, rgb(174, 174, 174) ${percentage}%)`,
           }}
         />
         <div className={css.percentsBlock}>
-          <p>0%</p>
+            <p>{percentage.toFixed(1)}%</p>
           <p>100%</p>
         </div>
       </div>
