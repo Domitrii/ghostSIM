@@ -52,7 +52,6 @@ function TrackerPage() {
     try {
       if (user.payload) {
         setUserData(user.payload);
-        console.log(user.payload)
         setUserName(user.payload.name);
         setDailyNormData(user.payload.dailyNorm || 2000);
         

@@ -4,16 +4,23 @@ import { currentTime } from '../TrackSecPage/MonthCount/Counts';
 import { Formik, Form, Field } from 'formik';
 import { Toaster, toast } from 'react-hot-toast';
 import { IoIosClose } from "react-icons/io";
-import { apiAddWaterRecord } from '../../redux/water/operation';
+import { apiUpdateWaterRecord } from '../../redux/water/operation';
+import { useDispatch } from 'react-redux';
+import { currentDay } from '../TrackSecPage/MonthCount/Counts';
 
-function ModalForm({ text, choose, close, onSubmitData,  }) {
+function ModalForm({ text, choose, close, onSubmitData, amountNow, itemId, editModal }) {
   const initialState = {
     amount: 0,
     time: currentTime(),
   };
 
+  const dispatch = useDispatch();
   const [recordingTime, setRecordingTime] = useState(initialState.time);
   const [isCount, setIsCount] = useState(initialState.amount);
+
+  const handleEdit = async (resp) => {
+    dispatch(apiUpdateWaterRecord(resp))
+  }
 
   const addMoreWater = () => {
     if (isCount === 1000) {
@@ -33,12 +40,13 @@ function ModalForm({ text, choose, close, onSubmitData,  }) {
     toast.remove()
   }
 
-  // const editOrAdd = () => {
-  //   console.log(amountNow)
-  //   amountNow ? amountNow : values.amount
-  // }
-
   const handleSubmit = (values) => {
+    if(editModal){
+      let day = currentDay();
+      handleEdit({_id: itemId, amount: values.amount, time: `${day}-${values.time}`})
+      close()
+      return
+    }
     if(values.amount === 0 || values.amount === '' ){
         values.amount = isCount
     }
@@ -57,7 +65,7 @@ function ModalForm({ text, choose, close, onSubmitData,  }) {
     <>
       <div className={css.modalBack} onClick={close}></div>
       <div className={css.modalBlock}>
-        <Formik initialValues={{amount: isCount, time: recordingTime,}} onSubmit={handleSubmit}>
+        <Formik initialValues={{amount: isCount, time: recordingTime,}} enableReinitialize onSubmit={handleSubmit}>
           {({ values, handleChange, handleSubmit }) => (
             <Form onSubmit={handleSubmit} className={css.modalBlockCont}>
                 <div className={css.closeModal} onClick={close}><IoIosClose className={css.closeBtn} /></div>

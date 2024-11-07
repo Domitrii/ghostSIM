@@ -6,7 +6,6 @@ export const apiDailyRecord = createAsyncThunk(
     async (query, thunkApi) => {
         try {
             const {data} = await dailyRecord(query);
-            console.log(data)
             return data;
         } catch (error) {
             return thunkApi.rejectWithValue(error);
@@ -43,8 +42,8 @@ export const apiUpdateWaterRecord = createAsyncThunk(
     'track/update',
     async (data, thunkApi) => {
         try {
-            const { id, amount, time } = data;
-            const updatedData = await updateWaterRecord(id, amount, time);
+            const { _id, amount, time } = data;
+            const updatedData = await updateWaterRecord(_id, String(amount), time);
             return updatedData;
         } catch (error) {
             return thunkApi.rejectWithValue(error);
@@ -56,9 +55,7 @@ export const apiDeleteWaterRecord = createAsyncThunk(
     'track/delete',
     async (data, thunkApi) => {
         try {
-            console.log(data)
             const {_id} = data
-            console.log(_id)
             const resp = await deleteWaterRecord(_id);
             return resp;
         } catch (error) {

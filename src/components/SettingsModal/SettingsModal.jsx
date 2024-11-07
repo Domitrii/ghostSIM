@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { apiUpdateUser } from '../../redux/auth/operation'
 import { useEffect, useState } from 'react'
 import { getWaterNorm } from "../../helper/NormaPerDay";
-import { selectCurrentUser } from "../../redux/auth/selectors";
+// import { selectCurrentUser } from "../../redux/auth/selectors";
 
 function SettingsModal({data, close, daily, dailyNormData}) {
     const dispatch = useDispatch()
-
+    // const currentU = useSelector(selectCurrentUser)
     const [newValue, setNewValue] = useState()
     const [changeName, setChangeName] = useState(true)
     const [changeEmail, setChangeEmail] = useState(true)
@@ -42,19 +42,19 @@ function SettingsModal({data, close, daily, dailyNormData}) {
         setChangeEmail(!changeEmail)
     }
 
-    useEffect(() => {
-        daily(Number(getWaterNorm( data.gender ,data.weight, data.timeActive)) * 1000)
-    }, [data])
-
-
     const handleSubmit = async (values) => {
+        daily(Number(getWaterNorm( values.gender ,values.weight, values.timeActive)) * 1000)
         values.timeActive = newValue
-        values.dailyNorm = dailyNormData
+        values.dailyNorm = Number(getWaterNorm( values.gender ,values.weight, values.timeActive)) * 1000
         try {
             const result = await dispatch(apiUpdateUser(values))
             if(!result) {
                 console.log('error')
             }
+            // let a = await currentU
+            // console.log(a.user.dailyNorm)
+            // a.user.dailyNorm = dailyNormData
+            // console.log(a)
             window.location.reload()
             return result
         } catch (error) {
@@ -62,11 +62,22 @@ function SettingsModal({data, close, daily, dailyNormData}) {
         }
     }   
     
+    // useEffect(() => {
+    //     const tryer = async () => {
+            
+    //     }
+    // }, [handleSubmit])
+
+    useEffect(() => {
+        daily(Number(getWaterNorm( data.gender ,data.weight, data.timeActive)) * 1000)
+    }, [data])
+
+
   return (
     <>
         <div className={css.modalBack} onClick={close}></div>
         <div className={css.modalBlock}>
-            <Formik initialValues={data} onSubmit={handleSubmit} validationSchema={schema} >
+            <Formik initialValues={data} onSubmit={handleSubmit} enableReinitialize validationSchema={schema} >
                 {({values, handleChange, handleSubmit}) => (
                     <Form onSubmit={handleSubmit}>
                         <div className={css.modalTitle}>Settings</div>

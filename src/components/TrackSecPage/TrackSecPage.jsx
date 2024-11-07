@@ -16,6 +16,7 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName, setIsModal,
     const selector = useSelector(selectCurrentUser);
     const [editModal, setEditModal] = useState(false);
     const [amountNow, setAmountNow] = useState(0);
+    const [itemId, setItemId] = useState(null)
 
     const dispatch = useDispatch();
 
@@ -26,7 +27,6 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName, setIsModal,
     const settingsData = async () => {
         try {
             const data = await selector;
-            console.log(data)
             setIsSetting(true);
             setSetModal(data);
         } catch (error) {
@@ -88,7 +88,7 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName, setIsModal,
                     <button className={css.addWaterBtn} onClick={addWater}><span>+</span> Add Water</button>
                 </div>
                 <div className={css.addWaterSec}>
-                    <WaterList selectDay={selectDay} setOpenEdit={handleOpenEditModal}  />
+                    <WaterList selectDay={selectDay} setOpenEdit={handleOpenEditModal} setItemId={setItemId} />
                 </div>
             </div>
             <div className={css.monthCountBlock}>
@@ -117,6 +117,8 @@ function TrackSecPage({ selectDay, onSelect, handleLogout, userName, setIsModal,
                 close={handleCloseEdit}
                 onSubmitData={onSubmitData}
                 amountNow={amountNow} 
+                itemId={itemId}
+                editModal={editModal}
             />}
         </div>
     );

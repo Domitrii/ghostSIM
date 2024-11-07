@@ -8,8 +8,6 @@ function TrackFirstBlock({ userData, addWater, dailyNormData, waterAmount }) {
 
   useEffect(() => {
     if (dailyNormData && waterAmount) {
-      console.log(dailyNormData)
-      console.log(waterAmount)
       const percent = (waterAmount / dailyNormData) * 100;
       setPercentage(percent);
     }
